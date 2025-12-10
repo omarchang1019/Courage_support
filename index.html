@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>毛泽东语录 · 答案之书</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    background: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 480px;
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #d62828;
+  }
+
+  .quote {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f2f2f2;
+    border-radius: 12px;
+    font-size: 20px;
+    line-height: 1.6;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button {
+    background: #d62828;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 999px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(214,40,40,0.3);
+    transition: 0.15s;
+  }
+
+  button:hover {
+    background: #b51f1f;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>📕 毛泽东语录 · 答案之书</h1>
+
+  <div class="quote" id="quoteBox">点击下面按钮抽取一句语录</div>
+
+  <button onclick="pickQuote()">抽取语录</button>
+
+  <div class="footer">随机短句 · 本地运行 · 无需联网</div>
+</div>
+
+<script>
+const QUOTES = [
+  "人民群众是历史的真正创造者。",
+  "群众的眼睛是雪亮的。",
+  "世界是你们的，也是我们的。",
+  "前途光明，道路曲折。",
+  "没有调查，就没有发言权。",
+  "理论必须联系实际。",
+  "实践是检验真理的标准。",
+  "青年是最有朝气的力量。",
+  "战略上藐视敌人，战术上重视敌人。",
+  "自力更生是立足点。",
+  "艰苦奋斗，是事业成功的基础。",
+  "事物总是在不断变化。",
+  "矛盾存在于一切事物之中。",
+  "主要矛盾决定事物发展方向。",
+  "革命要靠人民的觉悟和团结。",
+  "全心全意为人民服务，是根本宗旨。",
+  "不斗争，不可能取得真正的解放。",
+  "一切反动势力看似强大，实则虚弱。",
+  "领导者必须以身作则。",
+  "批评和自我批评是思想武器。"
+];
+
+function pickQuote() {
+  const box = document.getElementById("quoteBox");
+  const randomIndex = Math.floor(Math.random() * QUOTES.length);
+  box.textContent = QUOTES[randomIndex];
+}
+</script>
+</body>
+</html>
