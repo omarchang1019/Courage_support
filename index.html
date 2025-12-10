@@ -1,118 +1,386 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>毛泽东语录 · 答案之书</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-  body {
-    font-family: system-ui, sans-serif;
-    background: #f7f7f7;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+  <meta charset="UTF-8">
+  <title>毛泽东语录 · 答案之书</title>
 
-  .container {
-    width: 90%;
-    max-width: 480px;
-    background: white;
-    padding: 28px;
-    border-radius: 18px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.12);
-    text-align: center;
-  }
+  <!-- 让页面在手机上正常缩放 -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 
-  h1 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #d62828;
-  }
+  <!-- 让 iOS 可以添加到主屏幕并全屏显示 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="语录答案书">
 
-  .quote {
-    margin: 20px 0;
-    padding: 20px;
-    background: #f2f2f2;
-    border-radius: 12px;
-    font-size: 20px;
-    line-height: 1.6;
-    min-height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  <!-- 如果你有自己的图标，把 icon.png 换成你的地址 -->
+  <link rel="apple-touch-icon" href="icon.png">
 
-  button {
-    background: #d62828;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 999px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(214,40,40,0.3);
-    transition: 0.15s;
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  button:hover {
-    background: #b51f1f;
-  }
+    html, body {
+      height: 100%;
+    }
 
-  button:active {
-    transform: scale(0.98);
-  }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    }
 
-  .footer {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #888;
-  }
-</style>
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      padding: 24px 20px 18px;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #b91c1c;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .quote {
+      margin: 12px 0 18px;
+      padding: 18px 16px;
+      background: #f9fafb;
+      border-radius: 14px;
+      font-size: 18px;
+      line-height: 1.6;
+      min-height: 90px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #111827;
+    }
+
+    button {
+      width: 100%;
+      background: #dc2626;
+      color: white;
+      padding: 12px 0;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(220,38,38,0.35);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:hover {
+      background: #b91c1c;
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 4px 10px rgba(220,38,38,0.25);
+    }
+
+    .footer {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    /* 小屏 iPhone 适配 */
+    @media (max-width: 480px) {
+      .container {
+        border-radius: 18px;
+        padding: 20px 16px 14px;
+      }
+
+      h1 {
+        font-size: 17px;
+      }
+
+      .quote {
+        font-size: 17px;
+        min-height: 80px;
+        padding: 16px 12px;
+      }
+
+      button {
+        font-size: 15px;
+        padding: 11px 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
 <div class="container">
   <h1>📕 毛泽东语录 · 答案之书</h1>
+  <div class="subtitle">在心里默想一个问题，然后点击抽取一句语录</div>
 
   <div class="quote" id="quoteBox">点击下面按钮抽取一句语录</div>
 
-  <button onclick="pickQuote()">抽取语录</button>
+  <button id="pickBtn">抽取语录</button>
 
-  <div class="footer">随机短句 · 本地运行 · 无需联网</div>
+  <div class="footer">为 iPhone 优化 · 支持添加到主屏幕</div>
 </div>
 
 <script>
-const QUOTES = [
+  const QUOTES = [
   "人民群众是历史的真正创造者。",
+  "群众的力量是无穷无尽的。",
+  "要相信群众，依靠群众，服务群众。",
+  "一切为了人民，一切依靠人民。",
+  "人民利益高于一切。",
+  "离开群众，任何事业都无法成功。",
+  "群众路线是真正有效的工作方法。",
   "群众的眼睛是雪亮的。",
-  "世界是你们的，也是我们的。",
-  "前途光明，道路曲折。",
-  "没有调查，就没有发言权。",
-  "理论必须联系实际。",
-  "实践是检验真理的标准。",
-  "青年是最有朝气的力量。",
-  "战略上藐视敌人，战术上重视敌人。",
-  "自力更生是立足点。",
-  "艰苦奋斗，是事业成功的基础。",
-  "事物总是在不断变化。",
-  "矛盾存在于一切事物之中。",
-  "主要矛盾决定事物发展方向。",
-  "革命要靠人民的觉悟和团结。",
-  "全心全意为人民服务，是根本宗旨。",
-  "不斗争，不可能取得真正的解放。",
+  "人民的觉悟决定事业的方向。",
+  "人民有无限的创造力。",
+  "青年最富朝气，是最有希望的力量。",
+  "青年应当立志为人民服务。",
+  "未来属于青年，责任也属于青年。",
+  "青年要敢想、敢干、敢承担。",
+  "青年要有理想、有本领、有担当。",
+  "前途光明，但道路曲折。",
+  "困难越大，越要保持信念。",
+  "理想的力量能穿越艰难险阻。",
+  "精神不倒，事业不倒。",
+  "要敢于面对困难，而不是回避困难。",
+  "革命不是请客吃饭，而是艰苦斗争。",
+  "不斗争，就无法赢得解放。",
+  "斗争要有勇气，也要有策略。",
   "一切反动势力看似强大，实则虚弱。",
+  "敢于斗争，善于斗争，是胜利的关键。",
+  "斗争是通向和平与发展的必经之路。",
+  "坚持真理，修正错误，是前进的必然要求。",
+  "实践是检验真理的标准。",
+  "理论必须联系实际才能发挥作用。",
+  "没有调查，就没有发言权。",
+  "要深入实际，深入群众，了解真实情况。",
+  "路线正确，事业就会顺利；路线错误，一切都会受挫。",
+  "认识来自实践，又服务于实践。",
+  "行动决定认识的深度。",
+  "理论脱离实际，就会失去意义。",
+  "思想统一，是力量凝聚的前提。",
+  "要不断学习，不断提高。",
+  "学习的目的在于运用。",
+  "谦虚使人进步，骄傲使人落后。",
+  "要打开思想，善于接受新事物。",
+  "改造世界也要改造自己。",
+  "要敢于承认错误，才能避免更大的错误。",
+  "批评与自我批评是前进的武器。",
+  "实事求是，是科学的方法。",
+  "做任何事都要从实际出发。",
+  "不要脱离实际空想，不要忽视实际困难。",
+  "要敢于提出问题，解决问题。",
+  "事物总是在变化发展中。",
+  "矛盾存在于一切事物之中。",
+  "主要矛盾决定事物的发展方向。",
+  "抓住主要矛盾，才能抓住问题的关键。",
+  "量变积累到一定程度会引起质变。",
+  "世界不是静止的，而是动态变化的。",
+  "要用发展的眼光看问题。",
+  "事物都有两面性，要全面分析。",
+  "既要看到成绩，也要看到不足。",
+  "既要看到困难，也要看到希望。",
+  "既要看到有利条件，也要看到不利因素。",
+  "革命精神永不过时。",
+  "革命理想高于一切。",
+  "坚定的信念能够战胜一切困难。",
+  "道路是在实践中走出来的。",
+  "要有长远眼光，不被暂时困难吓倒。",
+  "成功来源于坚持和奋斗。",
+  "目标越远大，越需要长期的努力。",
+  "前进之路不怕曲折，就怕失去方向。",
+  "团结是力量的源泉。",
+  "团结一切可以团结的力量。",
+  "分裂削弱力量，团结带来胜利。",
+  "任何事业都不能靠个人英雄主义。",
+  "依靠集体智慧，事业才能发展。",
+  "真正的领导来自理解群众和服务群众。",
   "领导者必须以身作则。",
-  "批评和自我批评是思想武器。"
-];
+  "权力不是特权，而是责任。",
+  "干部要谦虚谨慎，戒骄戒躁。",
+  "干部要深入群众，了解真实情况。",
+  "当干部要敢担当，有责任感。",
+  "要善于团结同志，而不是分裂同志。",
+  "要做群众的学生，而不是群众的主人。",
+  "群众中蕴藏着无数创造。",
+  "创新来自实践，来自群众。",
+  "世界在变革中前进，思想也要不断更新。",
+  "要善于发现新事物，支持新事物。",
+  "大胆探索，勇于突破旧框架。",
+  "只要方向正确，小步也能前进。",
+  "和平要靠斗争争取，而不是等待。",
+  "真正的力量来自组织和人民。",
+  "军队来自人民，也服务人民。",
+  "战略上要藐视敌人，战术上要重视敌人。",
+  "小胜积累成大胜，局部带动全局。",
+  "灵活机动，是制胜的重要方法。",
+  "战争的目的在于争取和平。",
+  "发展要依靠自力更生。",
+  "艰苦奋斗是成功的基础。",
+  "独立自主是走向强大的必由之路。",
+  "空谈误国，实干兴邦。",
+  "路要靠自己走，事要靠自己做。",
+  "发展必须立足自身力量。",
+  "国家的命运掌握在人民手中。",
+  "成功来自集体努力，而不是偶然。",
+  "每一步前进都需要付出努力。",
+  "环境越复杂，越要保持定力。",
+  "大局决定方向，细节决定成败。",
+  "要学会统筹兼顾，处理好不同关系。",
+  "抓住重点，就能带动全局。",
+  "要善于分清主次，抓住关键问题。",
+  "越是艰难的时刻，越要保持团结。",
+  "困难是成长的机会。",
+  "压力越大，越要保持清醒。",
+  "信念越坚定，力量越集中。",
+  "人民是真正的英雄。",
+  "人民的力量不容低估。",
+  "人民的愿望决定事业成败。",
+  "要尊重人民、依靠人民、服务人民。",
+  "人民需要什么，工作就要做到哪里。",
+  "心中装着人民，脚下才有力量。",
+  "为人民服务是一生的信念。",
+  "革命不是一阵风，而是长期的奋斗。",
+  "伟大的事业需要伟大的精神。",
+  "前进道路不怕曲折，只怕迷失方向。",
+  "方向比速度更重要。",
+  "机会常常隐藏在困难中。",
+  "越干越会干，越学越会学。",
+  "经验来源于实践，而不是书本。",
+  "学习永无止境。",
+  "越是复杂的问题越要冷静。",
+  "独立思考比盲目跟从更重要。",
+  "不要迷信权威，要尊重事实。",
+  "尊重科学，尊重规律。",
+  "规律不可违背，必须认识和利用。",
+  "要用历史眼光看问题。",
+  "历史从不辜负奋斗的人。",
+  "今天的努力决定明天的方向。",
+  "人的思想是可以不断提高的。",
+  "改革来自不断否定落后思想。",
+  "要相信人民的智慧，不要轻视人民。",
+  "伟大的力量来自人民的觉悟。",
+  "人民的团结是最坚固的基础。",
+  "党和人民的血肉联系不能削弱。",
+  "任何脱离群众的行为都会失败。",
+  "政治工作是一切工作的生命线。",
+  "精神力量比物质力量更持久。",
+  "意志力是克服困难的关键。",
+  "一个人精神越强大，越能战胜挫折。",
+  "任何伟大事业都需要强大的精神动力。",
+  "人的潜力远大于想象。",
+  "要善于把压力转化为动力。",
+  "解决问题要把握规律，而不是盲目行事。",
+  "越是在复杂局面中，越要坚持原则。",
+  "原则不能放弃，方法可以灵活。",
+  "目标不变，途径可以多样。",
+  "革命和建设都要讲究策略。",
+  "做事要讲究时机和节奏。",
+  "要善于把握机遇，而不是错失机遇。",
+  "机遇永远留给准备好的人。",
+  "思想统一，行动一致，才能形成合力。",
+  "不断提高思想水平，才能适应事业发展。",
+  "思想上的懒惰比行动的懒惰更危险。",
+  "思想解放是前进的第一步。",
+  "越进步的人越懂得学习的重要性。",
+  "学习不是为了应付，而是为了成长。",
+  "思想越开阔，路就越宽。",
+  "世界之大，无奇不有，要保持好奇。",
+  "越懂得尊重别人，越能赢得尊重。",
+  "团结来自互相理解，互相支持。",
+  "人与人之间要多合作、少对立。",
+  "批评不是否定，而是帮助成长。",
+  "要平等对待每一个人。",
+  "要尊重人民的选择与判断。",
+  "真正的力量不是命令，而是信任。",
+  "信任越多，力量越大。",
+  "要做让人民信任的人。",
+  "权力越大，责任越大。",
+  "做大事先做人，做人要正直。",
+  "要守住底线，才能走得更远。",
+  "伟大来自坚持，平凡也能铸就非凡。",
+  "开始并不难，坚持才最难。",
+  "坚持越久，越接近成功。",
+  "脚踏实地，一步一个脚印。",
+  "方向正确比走得快更重要。",
+  "心静才能看清路，心明才能走正路。",
+  "越是嘈杂越要保持清醒。",
+  "越是紧张越要保持冷静。",
+  "思考是行动的灯塔。",
+  "用头脑干事，而不是凭冲动。",
+  "好的想法来自深入生活。",
+  "好的决策来自充分了解情况。",
+  "要学会倾听群众的声音。",
+  "群众中没有解决不了的问题。",
+  "人民是最伟大的思想源泉。",
+  "人民的幸福就是工作的目标。",
+  "革命者一刻不能脱离人民。",
+  "人民的支持是真正的力量基础。",
+  "无论什么时候，都不能忘记初心。",
+  "改变世界要从改变自己开始。",
+  "成长是一场内心的革命。",
+  "心胸越宽，事业越大。",
+  "思想越成熟，判断越准确。",
+  "每一次反思都让人进步。",
+  "每一次困难都让人强大。",
+  "解决问题要抓住主要矛盾。",
+  "复杂问题简单化，简单问题具体化。",
+  "要善于从一件事上看到全局。",
+  "越难的决策越要慎重。",
+  "越小的细节越不能忽视。",
+  "大处着眼，小处着手。",
+  "目标明确，行动果断。",
+  "敢于创新，敢于突破。",
+  "没有人能阻挡追求真理的人。",
+  "精神的力量常常超越物质。",
+  "失去精神，便失去方向。",
+  "思想先进，行动才能先进。",
+  "信念坚定，力量才能集中。",
+  "人民是推动时代前进的动力。",
+  "时代的车轮永远向前。",
+  "历史不会停步，社会不会停步。",
+  "越努力，越幸运。",
+  "越奋斗，越光荣。",
+  "每一天的积累都意义重大。",
+  "每一次坚持都值得赞扬。",
+  "奋斗是一生的事业。",
+  "信念决定命运，行动铸就未来。",
+  "敢于担当的人最值得敬佩。",
+  "挑战越大，成就越大。",
+  "越是关键时刻越能看出精神力量。",
+  "真正的勇气源于信仰与责任。",
+  "心中有信念，脚下有力量。",
+  "越努力，就越靠近光明。"
+  ];
 
-function pickQuote() {
-  const box = document.getElementById("quoteBox");
-  const randomIndex = Math.floor(Math.random() * QUOTES.length);
-  box.textContent = QUOTES[randomIndex];
-}
+  function pickQuote() {
+    const box = document.getElementById("quoteBox");
+    const i = Math.floor(Math.random() * QUOTES.length);
+    box.textContent = QUOTES[i];
+  }
+
+  document.getElementById("pickBtn").addEventListener("click", pickQuote);
+
+  // 可选：进入页面自动抽一句
+  // window.addEventListener("load", pickQuote);
 </script>
 </body>
 </html>
